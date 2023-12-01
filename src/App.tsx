@@ -2,65 +2,38 @@ import React, { MouseEventHandler, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-
-
 export default function App() {
 
-  const [health, setHealth] = useState(100);
-  const [atk, setAtk] = useState(1);
+  var [var1, setvar1] = useState(Math.floor(Math.random() * window.innerHeight));
+  var [var2, setvar2] = useState(Math.floor(Math.random() * window.innerWidth));
+  var [final, setFinal] = useState(0);
 
-function handleHealth(amount: number) {
-  setHealth(health + amount);
-}
+  const max = Math.hypot(window.innerWidth, window.innerHeight);
+  var hypot = 100; //random value so crap doesn't go wrong ig
+  var mousex = 0;
+  var mousey = 0;
+
+
+document.onmousemove = function(event) {
+  console.log(var1, var2);
+  mousex = event.clientX;
+  mousey = event.clientY;
+  hypot = Math.hypot(Math.abs(var2-mousey), Math.abs(var1-mousex));
+  setFinal(Math.abs(hypot/max * 100 - 100));
+  if (hypot <= 60) {
+    alert("you win!");
+    setvar1(var1  = Math.floor(Math.random() * window.innerHeight));
+    setvar1(var2  = Math.floor(Math.random() * window.innerWidth));
+  }
+};
+
 
   return (
-    <div className='border'>
-
-      <div className='left'>
-
-        <Health health={health} handleHealth={handleHealth}></Health>
-        <Attack atk={atk}></Attack>
-
-      </div>
-      
-      <div className='right'>
-        <span>
-          A really cool enemy blocks your path:
-        </span>
-      </div>
-
+  <div className='box1'><h1>TREASURE HUNT</h1>
+    <div className='main_bar'>
+      <div className='indicator' style={{width: (final + 2.5) + "%"}}></div>
     </div>
-  );
-}
-
-function Health({health, handleHealth}: {health: number; handleHealth: Function;}) {
-  return (
-
-    <div className='health_con new_sect'>
-
-      <span>HEALTH: {health}</span>
-
-      <div className='health_box'>
-        <div className='health' style={{width: health + "%"}}></div>
-      </div>
-      <MyButton health={health} onClick={() => handleHealth(-1)}></MyButton>
-    </div>
-  );
-}
-
-function MyButton({ health, onClick }: {health: number; onClick: MouseEventHandler;}) {
-  return (
-    <button onClick={onClick}>OMG HELP ME 
-    </button>
-  );
-}
-
-function Attack({atk}: {atk: number;}) {
-  return (
-
-    <div className='health_con new_sect'>
-
-      <span>ATK POWER: {atk}</span>
+    <h2>Move your cursor around to find the hidden treasure, the bar will fill up the closer you are.</h2>
     </div>
   );
 }
